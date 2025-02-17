@@ -24,8 +24,9 @@ export default tseslint.config(
     },
     rules: {
       ...eslintPluginReactHooks.configs.recommended.rules,
-      ...eslintPluginReactRefresh.configs.vite.rules
+      ...eslintPluginReactRefresh.configs.vite.rules,
+      semi: [2, 'always']
     }
   },
   eslintConfigPrettier
-)
+);
