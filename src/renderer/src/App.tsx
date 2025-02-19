@@ -1,9 +1,12 @@
-import { BrowserRouter as Router, Route } from 'react-router';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import Journal from './components/Journal';
 
 function App(): JSX.Element {
   return (
     <Router>
-      <Route path="/"></Route>
+      <Routes>
+        <Route path="/" Component={Journal} />
+      </Routes>
     </Router>
   );
 }
