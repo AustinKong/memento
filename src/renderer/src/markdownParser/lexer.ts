@@ -8,7 +8,7 @@ type TextToken = {
 
 // Inline tokens can be nested under other token types, and can nest other tokens
 type InlineToken = {
-  type: 'bold' | 'italic' | 'code';
+  type: 'boldItalic' | 'bold' | 'italic' | 'code';
   children: (TextToken | InlineToken)[];
 };
 
@@ -31,17 +31,21 @@ type Paragraph = {
   children: (TextToken | InlineToken)[];
 };
 
+/*
+ * https://www.markdownguide.org/basic-syntax/
+ * According to markdonw syntax guide, we don't have to support using underscores `_` for bold and underline, its generally not recommended
+ */
 const tokenize = (markdown: string): Token[] => {
   const lines = markdown.split('\n');
   const tokens: Token[] = [];
 
   for (const line of lines) {
     // All cases of BlockTokens
-    if (line.match(/^#{1, 6}/)) {
+    if (line.match(/^#{1,6} /)) {
       tokens.push({
         type: 'header',
-        children: inlineTokenize(line.replace(/^#{1, 6} /, '')),
-        level: Math.min(line.match(/^#{1, 6}/)?.[0].length || 1, 6)
+        children: inlineTokenize(line.replace(/^#{1,6} /, '')),
+        level: Math.min(line.match(/^#{1,6}/)?.[0].length || 1, 6)
       } as Header);
     } else if (line.match(/^> /)) {
       tokens.push({
@@ -60,18 +64,19 @@ const tokenize = (markdown: string): Token[] => {
 };
 
 const inlineTokenize = (line: string): (TextToken | InlineToken)[] => {
-  const regex: RegExp = /\*\*(.*?)\*\*|_(.*?)_|`(.*?)`/g;
+  const regex: RegExp = /\*\*\*(.*?)\*\*\*|\*\*(.*?)\*\*|\*(.*?)\*|`(.*?)`/g;
   const tokens: (TextToken | InlineToken)[] = [];
 
   let lastIndex = 0;
 
   // All cases of InlineTokens
-  line.replace(regex, (match, bold, italic, code, offset) => {
+  line.replace(regex, (match, boldItalic, bold, italic, code, offset) => {
     if (lastIndex < offset) {
       tokens.push({ type: 'text', text: line.slice(lastIndex, offset) });
     }
-
-    if (bold) {
+    if (boldItalic) {
+      tokens.push({ type: 'boldItalic', children: inlineTokenize(boldItalic) } as InlineToken);
+    } else if (bold) {
       tokens.push({ type: 'bold', children: inlineTokenize(bold) } as InlineToken);
     } else if (italic) {
       tokens.push({ type: 'italic', children: inlineTokenize(italic) } as InlineToken);
@@ -90,4 +95,4 @@ const inlineTokenize = (line: string): (TextToken | InlineToken)[] => {
   return tokens;
 };
 
-export default tokenize;
+export { tokenize };
