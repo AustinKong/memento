@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { tokenize } from '../src/renderer/src/utils/markdownParser/lexer';
+import { tokenize } from '../src/renderer/src/utils/markdownParser/parser';
 import { renderMarkdown } from '../src/renderer/src/utils/markdownParser/renderer';
 import { Header, Token } from '../src/renderer/src/utils/markdownParser/types';
 
-describe('Markdown tokenizer', () => {
+describe('Markdown tokenizer base cases', () => {
   test('Tokenizes plain text', () => {
     const input = 'Lorem ipsum dolor sit amet.';
     expect(tokenize(input)).toEqual([
@@ -117,6 +117,60 @@ describe('Markdown tokenizer', () => {
             ]
           },
           { type: 'text', text: ' sit amet.' }
+        ]
+      }
+    ]);
+  });
+});
+
+describe('Markdown tokenizer edge cases', () => {
+  test('Tokenizes multiple inline elements', () => {
+    const input = '**Lorem** ipsum **dolor** sit amet.';
+    expect(tokenize(input)).toEqual([
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'bold',
+            children: [{ type: 'text', text: 'Lorem' }]
+          },
+          { type: 'text', text: ' ipsum ' },
+          {
+            type: 'bold',
+            children: [{ type: 'text', text: 'dolor' }]
+          },
+          { type: 'text', text: ' sit amet.' }
+        ]
+      }
+    ]);
+  });
+
+  test('Does not tokenize inline elements with spaces around them', () => {
+    const input = '** Lorem ** ipsum ** dolor ** sit amet.';
+    expect(tokenize(input)).toEqual([
+      {
+        type: 'paragraph',
+        children: [{ type: 'text', text: '** Lorem ** ipsum ** dolor ** sit amet.' }]
+      }
+    ]);
+  });
+
+  test('Tokenizess single character inline elements', () => {
+    const input = '**L**ore*m* ipsum dolor sit amet.';
+    expect(tokenize(input)).toEqual([
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'bold',
+            children: [{ type: 'text', text: 'L' }]
+          },
+          { type: 'text', text: 'ore' },
+          {
+            type: 'italic',
+            children: [{ type: 'text', text: 'm' }]
+          },
+          { type: 'text', text: ' ipsum dolor sit amet.' }
         ]
       }
     ]);

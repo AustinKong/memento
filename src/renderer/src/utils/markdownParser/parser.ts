@@ -35,7 +35,8 @@ const tokenize = (markdown: string): Token[] => {
 };
 
 const inlineTokenize = (line: string): (TextToken | InlineToken)[] => {
-  const regex: RegExp = /\*\*\*(.*)\*\*\*|\*\*(.*)\*\*|\*(.*)\*|`(.*)`/g;
+  const regex: RegExp =
+    /\*\*\*([^ *].*?[^ *])\*\*\*|\*\*([^ ].*?[^ ]|[^ *])\*\*|\*([^ *].*?[^ *]|[^ *])\*|`([^ ].*?[^ ]|[^ *])`/g;
   const tokens: (TextToken | InlineToken)[] = [];
 
   let lastIndex = 0;
