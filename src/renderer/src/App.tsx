@@ -1,5 +1,5 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import Journal from './components/Journal';
+import Journal from '@renderer/components/Journal';
 
 function App(): JSX.Element {
   return (

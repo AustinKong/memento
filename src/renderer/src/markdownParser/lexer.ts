@@ -1,45 +1,16 @@
-type Token = TextToken | InlineToken | BlockToken;
-
-// Most basic building block, holds plain text
-type TextToken = {
-  type: 'text';
-  text: string;
-};
-
-// Inline tokens can be nested under other token types, and can nest other tokens
-type InlineToken = {
-  type: 'boldItalic' | 'bold' | 'italic' | 'code';
-  children: (TextToken | InlineToken)[];
-};
-
-// Block tokens cannot be nested under other token types
-type BlockToken = Header | Blockquote | Paragraph;
-
-type Header = {
-  type: 'header';
-  level: 1 | 2 | 3 | 4 | 5 | 6;
-  children: (TextToken | InlineToken)[];
-};
-
-type Blockquote = {
-  type: 'blockquote';
-  children: (TextToken | InlineToken)[];
-};
-
-type Paragraph = {
-  type: 'paragraph';
-  children: (TextToken | InlineToken)[];
-};
+import { Token, TextToken, InlineToken, Header, Blockquote, Paragraph } from './types';
 
 /*
  * https://www.markdownguide.org/basic-syntax/
- * According to markdonw syntax guide, we don't have to support using underscores `_` for bold and underline, its generally not recommended
+ * According to markdown syntax guide, we don't have to support using underscores `_` for bold and underline, its generally not recommended
  */
 const tokenize = (markdown: string): Token[] => {
   const lines = markdown.split('\n');
   const tokens: Token[] = [];
 
   for (const line of lines) {
+    if (line === '') continue;
+
     // All cases of BlockTokens
     if (line.match(/^#{1,6} /)) {
       tokens.push({
@@ -64,7 +35,7 @@ const tokenize = (markdown: string): Token[] => {
 };
 
 const inlineTokenize = (line: string): (TextToken | InlineToken)[] => {
-  const regex: RegExp = /\*\*\*(.*?)\*\*\*|\*\*(.*?)\*\*|\*(.*?)\*|`(.*?)`/g;
+  const regex: RegExp = /\*\*\*(.*)\*\*\*|\*\*(.*)\*\*|\*(.*)\*|`(.*)`/g;
   const tokens: (TextToken | InlineToken)[] = [];
 
   let lastIndex = 0;
@@ -74,6 +45,7 @@ const inlineTokenize = (line: string): (TextToken | InlineToken)[] => {
     if (lastIndex < offset) {
       tokens.push({ type: 'text', text: line.slice(lastIndex, offset) });
     }
+
     if (boldItalic) {
       tokens.push({ type: 'boldItalic', children: inlineTokenize(boldItalic) } as InlineToken);
     } else if (bold) {
