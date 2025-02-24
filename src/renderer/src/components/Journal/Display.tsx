@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { renderMarkdown } from '@renderer/markdownParser/renderer';
-import { tokenize } from '@renderer/markdownParser/lexer';
+import { renderMarkdown } from '@renderer/utils/markdownParser/renderer';
+import { tokenize } from '@renderer/utils/markdownParser/lexer';
 
 const Display = ({ markdown }): JSX.Element => {
   const tokens = tokenize(markdown);
