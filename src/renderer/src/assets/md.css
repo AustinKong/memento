@@ -1,0 +1,27 @@
+.h1, .h2, .h3, .h4, .h5, .h6, .paragraph, .blockquote {
+  margin-bottom: 1rem;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  line-height: 1.3rem;
+  font-weight: bold;
+}
+
+.paragraph {
+  line-height: 1.5rem;
+}
+
+.bold {
+  font-style: inherit;
+  font-weight: bold;
+}
+
+.italic {
+  font-weight: inherit;
+  font-style: italic;
+}
+
+.blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-primary);
+}

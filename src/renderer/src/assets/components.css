@@ -1,0 +1,19 @@
+.iconButton {
+  all: unset;
+  padding: 4px;
+  border-radius: 8px;
+  background-color: var(--color-gray-100);
+  color: var(--color-text-secondary);
+}
+
+.iconButton * {
+  display: block;
+}
+
+.iconButton:hover {
+  background-color: var(--color-gray-200);
+}
+
+.iconButton:active {
+  background-color: var(--color-gray-300);
+}
