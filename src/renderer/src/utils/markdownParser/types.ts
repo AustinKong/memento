@@ -8,6 +8,7 @@ type TextToken = {
 
 // Inline tokens can be nested under other token types, and can nest other tokens
 type InlineToken = {
+  // INFO: DON'T remove boldItalic, this contradicts with having multiple inline blocks in the same line
   type: 'boldItalic' | 'bold' | 'italic' | 'code';
   children: (TextToken | InlineToken)[];
 };
