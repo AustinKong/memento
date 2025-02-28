@@ -1,4 +1,4 @@
-import { Token } from './types';
+import { Token } from '../../types/markdownParser.types';
 import { createElement } from 'react';
 
 const renderNodeWithKey = (node: Token, key: number): JSX.Element | string => renderNode(node, key);

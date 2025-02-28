@@ -2,6 +2,7 @@ import { Bold, Italic, Underline, Strikethrough, List, ListOrdered } from 'lucid
 
 import Dropdown from '../ui/Dropdown';
 import IconButton from '../ui/IconButton';
+import { Selection } from '../../types/selection.types'
 
 import styles from './styles.module.css';
 
@@ -17,7 +18,20 @@ const DROPDOWN_OPTIONS = [
   { value: 'code', label: 'Code' }
 ];
 
-const EditorToolbar = (): JSX.Element => {
+interface EditorToolbarProps {
+  content: string,
+  setContent: (content: string) => void;
+  selection: Selection;
+  textareaRef: React.RefObject<HTMLTextAreaElement>;
+}
+
+const EditorToolbar = ({ content, setContent, selection, textareaRef }: EditorToolbarProps): JSX.Element => {
+  const refocusCaret = () => {
+    if (!textareaRef.current) return;
+    textareaRef.current.focus();
+    // TODO
+  };
+
   return (
     <div className={styles.editorToolbar}>
       <Dropdown options={DROPDOWN_OPTIONS} onChange={() => {}} />

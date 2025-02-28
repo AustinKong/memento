@@ -1,20 +1,11 @@
 import { RefObject, useEffect } from 'react';
+import { SelectionPosition, Selection } from '../types/selection.types';
 import useDebouncedState from './useDebounce';
-
-interface SelectionPosition {
-  line: number;
-  char: number;
-}
 
 // Exposes the start and end positions of the current selection in a textarea
 // as line and character offsets or null otherwise.
-const useSelection = (
-  textareaRef: RefObject<HTMLTextAreaElement>
-): { start: SelectionPosition; end: SelectionPosition } | null => {
-  const [selection, setSelection] = useDebouncedState<{
-    start: SelectionPosition;
-    end: SelectionPosition;
-  } | null>(null, 100);
+const useSelection = (textareaRef: RefObject<HTMLTextAreaElement>): Selection => {
+  const [selection, setSelection] = useDebouncedState<Selection>(null, 100);
 
   useEffect(() => {
     const updateSelection = (): void => {

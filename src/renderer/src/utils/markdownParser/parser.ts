@@ -1,4 +1,11 @@
-import { Token, TextToken, InlineToken, Header, Blockquote, Paragraph } from './types';
+import {
+  Token,
+  TextToken,
+  InlineToken,
+  Header,
+  Blockquote,
+  Paragraph
+} from '../../types/markdownParser.types';
 
 /*
  * https://www.markdownguide.org/basic-syntax/
@@ -36,7 +43,7 @@ const tokenize = (markdown: string): Token[] => {
 
 const inlineTokenize = (line: string): (TextToken | InlineToken)[] => {
   const regex: RegExp =
-    /\*\*\*([^ *].*?[^ *])\*\*\*|\*\*([^ ].*?[^ ]|[^ *])\*\*|\*([^ *].*?[^ *]|[^ *])\*|`([^ ].*?[^ ]|[^ *])`/g;
+    /\*\*\*([^ *].*?[^ *]|[^ *])\*\*\*|\*\*([^ ].*?[^ ]|[^ *])\*\*|\*([^ *].*?[^ *]|[^ *])\*|`([^ ].*?[^ ]|[^ *])`/g;
   const tokens: (TextToken | InlineToken)[] = [];
 
   let lastIndex = 0;

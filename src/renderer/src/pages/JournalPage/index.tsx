@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { ChevronLeft, BookOpen, PencilLine } from 'lucide-react';
 
 import Display from '@renderer/components/Display';
@@ -9,17 +9,11 @@ import EditorToolbar from '@renderer/components/EditorToolbar';
 import useSelection from '@renderer/hooks/useSelection';
 
 const JournalPage = (): JSX.Element => {
+  // Why not a context? Because updating a context causes a re-render of all consumers. And the content state updates on every keystroke.
   const [mode, setMode] = useState<'source' | 'preview'>('source');
   const [content, setContent] = useState('');
-
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const selection = useSelection(textareaRef);
-
-  useEffect(() => {
-    if (selection) {
-      console.log(selection);
-    }
-  }, [selection]);
 
   return (
     <main className={styles.journalPage}>
@@ -43,7 +37,7 @@ const JournalPage = (): JSX.Element => {
         ) : (
           <Display markdown={content} />
         )}
-        <EditorToolbar />
+        <EditorToolbar content={content} setContent={setContent} selection={selection} />
       </section>
     </main>
   );
