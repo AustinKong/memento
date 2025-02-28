@@ -2,7 +2,6 @@
   all: unset;
   padding: 4px;
   border-radius: 8px;
-  background-color: var(--color-gray-100);
   color: var(--color-text-secondary);
 }
 
@@ -16,4 +15,23 @@
 
 .iconButton:active {
   background-color: var(--color-gray-300);
+}
+
+.dropdown {
+  position: relative;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.dropdownSelect {
+  all: unset;
+  padding: 10px 36px 10px 8px;
+}
+
+.dropdownArrow {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
 }

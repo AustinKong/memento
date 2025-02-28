@@ -1,0 +1,16 @@
+.editorToolbar {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 16px;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-surface);
+  width: fit-content;
+}
+
+.divider {
+  margin: 0 8px;
+  width: 1;
+  height: 1.8em;
+  border-left: 2px solid var(--color-gray-400);
+}

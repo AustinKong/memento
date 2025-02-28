@@ -44,6 +44,7 @@
   --color-surface: var(--color-white);
   --color-text-primary: var(--color-black);
   --color-text-secondary: var(--color-gray-600);
+  --shadow-surface: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 *,

@@ -1,14 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, BookOpen, PencilLine } from 'lucide-react';
 
 import Display from '@renderer/components/Display';
 import Editor from '@renderer/components/Editor';
 import styles from './styles.module.css';
 import IconButton from '@renderer/components/ui/IconButton';
+import EditorToolbar from '@renderer/components/EditorToolbar';
+import useSelection from '@renderer/hooks/useSelection';
 
 const JournalPage = (): JSX.Element => {
   const [mode, setMode] = useState<'source' | 'preview'>('source');
   const [content, setContent] = useState('');
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const selection = useSelection(textareaRef);
+
+  useEffect(() => {
+    if (selection) {
+      console.log(selection);
+    }
+  }, [selection]);
 
   return (
     <main className={styles.journalPage}>
@@ -27,10 +38,12 @@ const JournalPage = (): JSX.Element => {
             content={content}
             setContent={setContent}
             placeholder="Type something to get started"
+            ref={textareaRef}
           />
         ) : (
           <Display markdown={content} />
         )}
+        <EditorToolbar />
       </section>
     </main>
   );

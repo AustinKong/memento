@@ -1,17 +1,15 @@
-import PropTypes from 'prop-types';
+interface IconButtonProps {
+  icon: React.ReactNode;
+  onClick: () => void;
+  ariaLabel: string;
+}
 
-const IconButton = ({ icon, onClick, ariaLabel }): JSX.Element => {
+const IconButton = ({ icon, onClick, ariaLabel }: IconButtonProps): JSX.Element => {
   return (
     <button onClick={onClick} aria-label={ariaLabel} className="iconButton">
       {icon}
     </button>
   );
-};
-
-IconButton.propTypes = {
-  icon: PropTypes.node.isRequired,
-  onClick: PropTypes.func,
-  ariaLabel: PropTypes.string.isRequired
 };
 
 export default IconButton;
