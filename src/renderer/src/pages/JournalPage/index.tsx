@@ -37,7 +37,12 @@ const JournalPage = (): JSX.Element => {
         ) : (
           <Display markdown={content} />
         )}
-        <EditorToolbar content={content} setContent={setContent} selection={selection} />
+        <EditorToolbar
+          content={content}
+          setContent={setContent}
+          selection={selection}
+          textareaRef={textareaRef}
+        />
       </section>
     </main>
   );

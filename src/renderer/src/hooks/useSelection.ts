@@ -26,10 +26,18 @@ const useSelection = (textareaRef: RefObject<HTMLTextAreaElement>): Selection =>
       lines.reduce((charCount: number, line: string, index: number): number => {
         const lineLength = line.length + 1;
         if (selectionRange.start === null && charCount + lineLength >= selectionStart) {
-          selectionRange.start = { line: index, char: selectionStart - charCount };
+          selectionRange.start = {
+            line: index,
+            char: selectionStart - charCount,
+            absChar: selectionStart
+          };
         }
         if (selectionRange.end === null && charCount + lineLength >= selectionEnd) {
-          selectionRange.end = { line: index, char: selectionEnd - charCount };
+          selectionRange.end = {
+            line: index,
+            char: selectionEnd - charCount,
+            absChar: selectionEnd
+          };
         }
         return charCount + lineLength;
       }, 0);

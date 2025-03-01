@@ -1,6 +1,7 @@
 type SelectionPosition = {
   line: number;
   char: number;
+  absChar: number;
 };
 
 type Selection = {

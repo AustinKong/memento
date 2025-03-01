@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 
 import { tokenize } from '../src/renderer/src/utils/markdownParser/parser';
 import { renderMarkdown } from '../src/renderer/src/utils/markdownParser/renderer';
-import { Header, Token } from '../src/renderer/src/utils/markdownParser/types';
+import { Header, Token } from '../src/renderer/src/types/markdownParser.types';
 
 describe('Markdown tokenizer base cases', () => {
   test('Tokenizes plain text', () => {
