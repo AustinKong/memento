@@ -79,7 +79,7 @@ const toggleBold = (content: string, selection: Selection): string =>
   toggleInlineFormatting(content, '**', selection);
 
 const toggleItalic = (content: string, selection: Selection): string =>
-  toggleInlineFormatting(content, '*', selection);
+  toggleInlineFormatting(content, '_', selection);
 
 const toggleCode = (content: string, selection: Selection): string =>
   toggleInlineFormatting(content, '`', selection);

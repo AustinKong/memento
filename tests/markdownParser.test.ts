@@ -30,7 +30,7 @@ describe('Markdown tokenizer base cases', () => {
   });
 
   test('Tokenizes italic text', () => {
-    const input = '*Lorem ipsum* dolor sit amet.';
+    const input = '_Lorem ipsum_ dolor sit amet.';
     expect(tokenize(input)).toEqual([
       {
         type: 'paragraph',
@@ -43,12 +43,15 @@ describe('Markdown tokenizer base cases', () => {
   });
 
   test('Tokenizes bold italic text', () => {
-    const input = '***Lorem ipsum*** dolor sit amet.';
+    const input = '**_Lorem ipsum_** dolor sit amet.';
     expect(tokenize(input)).toEqual([
       {
         type: 'paragraph',
         children: [
-          { type: 'boldItalic', children: [{ type: 'text', text: 'Lorem ipsum' }] },
+          {
+            type: 'bold',
+            children: [{ type: 'italic', children: [{ type: 'text', text: 'Lorem ipsum' }] }]
+          },
           { type: 'text', text: ' dolor sit amet.' }
         ]
       }
@@ -77,7 +80,7 @@ describe('Markdown tokenizer base cases', () => {
   });
 
   test('Tokenizes nested inline elements', () => {
-    const input = '**Lorem *ipsum* dolor** sit amet.';
+    const input = '**Lorem _ipsum_ dolor** sit amet.';
     expect(tokenize(input)).toEqual([
       {
         type: 'paragraph',
@@ -100,7 +103,7 @@ describe('Markdown tokenizer base cases', () => {
   });
 
   test('Tokenizes nested block and inline elements', () => {
-    const input = '> **Lorem *ipsum* dolor** sit amet.';
+    const input = '> **Lorem _ipsum_ dolor** sit amet.';
     expect(tokenize(input)).toEqual([
       {
         type: 'blockquote',
@@ -156,7 +159,7 @@ describe('Markdown tokenizer edge cases', () => {
   });
 
   test('Tokenizess single character inline elements', () => {
-    const input = '**L**ore*m* ipsum dolor sit amet.';
+    const input = '**L**ore_m_ ipsum dolor sit amet.';
     expect(tokenize(input)).toEqual([
       {
         type: 'paragraph',
@@ -237,7 +240,10 @@ describe('Markdown renderer', () => {
       {
         type: 'paragraph',
         children: [
-          { type: 'boldItalic', children: [{ type: 'text', text: 'Lorem ipsum' }] },
+          {
+            type: 'bold',
+            children: [{ type: 'italic', children: [{ type: 'text', text: 'Lorem ipsum' }] }]
+          },
           { type: 'text', text: ' dolor sit amet.' }
         ]
       }

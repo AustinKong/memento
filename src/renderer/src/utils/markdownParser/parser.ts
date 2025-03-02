@@ -43,20 +43,18 @@ const tokenize = (markdown: string): Token[] => {
 
 const inlineTokenize = (line: string): (TextToken | InlineToken)[] => {
   const regex: RegExp =
-    /\*\*\*([^ *].*?[^ *]|[^ *])\*\*\*|\*\*([^ ].*?[^ ]|[^ *])\*\*|\*([^ *].*?[^ *]|[^ *])\*|`([^ ].*?[^ ]|[^ *])`/g;
+    /\*\*([^ ].*?[^ ]|[^ *])\*\*|_([^ *].*?[^ *]|[^ *])_|`([^ ].*?[^ ]|[^ *])`/g;
   const tokens: (TextToken | InlineToken)[] = [];
 
   let lastIndex = 0;
 
   // All cases of InlineTokens
-  line.replace(regex, (match, boldItalic, bold, italic, code, offset) => {
+  line.replace(regex, (match, bold, italic, code, offset) => {
     if (lastIndex < offset) {
       tokens.push({ type: 'text', text: line.slice(lastIndex, offset) });
     }
 
-    if (boldItalic) {
-      tokens.push({ type: 'boldItalic', children: inlineTokenize(boldItalic) } as InlineToken);
-    } else if (bold) {
+    if (bold) {
       tokens.push({ type: 'bold', children: inlineTokenize(bold) } as InlineToken);
     } else if (italic) {
       tokens.push({ type: 'italic', children: inlineTokenize(italic) } as InlineToken);

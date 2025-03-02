@@ -7,12 +7,6 @@ const renderNode = (node: Token, key: number): JSX.Element | string => {
   switch (node.type) {
     case 'text':
       return node.text;
-    case 'boldItalic':
-      return (
-        <b className="bold" key={key}>
-          <i className="italic">{node.children.map(renderNodeWithKey)}</i>
-        </b>
-      );
     case 'bold':
       return (
         <b className="bold" key={key}>
