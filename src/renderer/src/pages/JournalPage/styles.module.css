@@ -19,6 +19,13 @@
   margin: 0 auto;
 }
 
+.leftAside {
+  position: fixed;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .date {
 
 }

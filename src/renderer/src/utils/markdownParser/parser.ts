@@ -10,6 +10,7 @@ import {
 /*
  * https://www.markdownguide.org/basic-syntax/
  * According to markdown syntax guide, we don't have to support using underscores `_` for bold and underline, its generally not recommended
+ * However, everything is more difficult if bold and underline share the same character '*', so we will make italic '_' and bold '**'
  */
 const tokenize = (markdown: string): Token[] => {
   const lines = markdown.split('\n');

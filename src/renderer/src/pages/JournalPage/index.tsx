@@ -3,10 +3,12 @@ import { ChevronLeft, BookOpen, PencilLine } from 'lucide-react';
 
 import Display from '@renderer/components/Display';
 import Editor from '@renderer/components/Editor';
-import styles from './styles.module.css';
 import IconButton from '@renderer/components/ui/IconButton';
 import EditorToolbar from '@renderer/components/EditorToolbar';
+import ScrollableCalendar from '@renderer/components/ScrollableCalendar';
 import useSelection from '@renderer/hooks/useSelection';
+import styles from './styles.module.css';
+import dayjs from 'dayjs';
 
 const JournalPage = (): JSX.Element => {
   // Why not a context? Because updating a context causes a re-render of all consumers. And the content state updates on every keystroke.
@@ -28,22 +30,30 @@ const JournalPage = (): JSX.Element => {
       </nav>
       <section className={styles.content}>
         {mode === 'source' ? (
-          <Editor
-            content={content}
-            setContent={setContent}
-            placeholder="Type something to get started"
-            ref={textareaRef}
-          />
+          <>
+            <Editor
+              content={content}
+              setContent={setContent}
+              placeholder="Type something to get started"
+              ref={textareaRef}
+            />
+            <EditorToolbar
+              content={content}
+              setContent={setContent}
+              selection={selection}
+              textareaRef={textareaRef}
+            />
+          </>
         ) : (
           <Display markdown={content} />
         )}
-        <EditorToolbar
-          content={content}
-          setContent={setContent}
-          selection={selection}
-          textareaRef={textareaRef}
-        />
       </section>
+      <aside className={styles.leftAside}>
+        <ScrollableCalendar
+          initialDate={dayjs()}
+          onChangeDate={(date: Date) => console.log(date)}
+        />
+      </aside>
     </main>
   );
 };

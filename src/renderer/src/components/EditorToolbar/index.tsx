@@ -34,9 +34,9 @@ const EditorToolbar = ({
 }: EditorToolbarProps): JSX.Element => {
   const refocusCaret = (): void => {
     setTimeout(() => {
-      // if (!textareaRef.current || !selection) return;
-      // textareaRef.current.focus();
-      // textareaRef.current.setSelectionRange(selection.start.absChar, selection.start.absChar);
+      if (!textareaRef.current || !selection) return;
+      textareaRef.current.focus();
+      textareaRef.current.setSelectionRange(selection.end.absChar, selection.end.absChar);
     }, 0);
   };
 

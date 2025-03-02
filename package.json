@@ -24,6 +24,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
+    "dayjs": "^1.11.13",
     "lucide-react": "^0.476.0",
     "react-router-dom": "^7.1.5"
   },
