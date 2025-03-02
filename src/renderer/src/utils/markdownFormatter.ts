@@ -78,4 +78,10 @@ const toggleInlineFormatting = (content: string, format: string, selection: Sele
 const toggleBold = (content: string, selection: Selection): string =>
   toggleInlineFormatting(content, '**', selection);
 
-export { toggleBold };
+const toggleItalic = (content: string, selection: Selection): string =>
+  toggleInlineFormatting(content, '*', selection);
+
+const toggleCode = (content: string, selection: Selection): string =>
+  toggleInlineFormatting(content, '`', selection);
+
+export { toggleBold, toggleItalic, toggleCode };

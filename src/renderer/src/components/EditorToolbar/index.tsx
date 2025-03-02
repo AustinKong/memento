@@ -2,7 +2,8 @@ import { Bold, Italic, Underline, Strikethrough, List, ListOrdered } from 'lucid
 
 import Dropdown from '../ui/Dropdown';
 import IconButton from '../ui/IconButton';
-import { Selection } from '../../types/selection.types'
+import { Selection } from '../../types/selection.types';
+import { toggleBold, toggleItalic } from '@renderer/utils/markdownFormatter';
 
 import styles from './styles.module.css';
 
@@ -19,25 +20,44 @@ const DROPDOWN_OPTIONS = [
 ];
 
 interface EditorToolbarProps {
-  content: string,
+  content: string;
   setContent: (content: string) => void;
   selection: Selection;
   textareaRef: React.RefObject<HTMLTextAreaElement>;
 }
 
-const EditorToolbar = ({ content, setContent, selection, textareaRef }: EditorToolbarProps): JSX.Element => {
-  const refocusCaret = () => {
-    if (!textareaRef.current) return;
-    textareaRef.current.focus();
-    // TODO
+const EditorToolbar = ({
+  content,
+  setContent,
+  selection,
+  textareaRef
+}: EditorToolbarProps): JSX.Element => {
+  const refocusCaret = (): void => {
+    setTimeout(() => {
+      // if (!textareaRef.current || !selection) return;
+      // textareaRef.current.focus();
+      // textareaRef.current.setSelectionRange(selection.start.absChar, selection.start.absChar);
+    }, 0);
+  };
+
+  const handleBold = (): void => {
+    if (!selection) return;
+    setContent(toggleBold(content, selection));
+    refocusCaret();
+  };
+
+  const handleItalic = (): void => {
+    if (!selection) return;
+    setContent(toggleItalic(content, selection));
+    refocusCaret();
   };
 
   return (
     <div className={styles.editorToolbar}>
       <Dropdown options={DROPDOWN_OPTIONS} onChange={() => {}} />
       <div className={styles.divider} />
-      <IconButton icon={<Bold />} onClick={() => {}} ariaLabel="Bold" />
-      <IconButton icon={<Italic />} onClick={() => {}} ariaLabel="Italic" />
+      <IconButton icon={<Bold />} onClick={handleBold} ariaLabel="Bold" />
+      <IconButton icon={<Italic />} onClick={handleItalic} ariaLabel="Italic" />
       <IconButton icon={<Underline />} onClick={() => {}} ariaLabel="Underline" />
       <IconButton icon={<Strikethrough />} onClick={() => {}} ariaLabel="Strikethrough" />
       <div className={styles.divider} />
