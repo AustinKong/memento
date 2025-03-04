@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, BookOpen, PencilLine } from 'lucide-react';
 
 import Display from '@renderer/components/Display';
@@ -9,6 +9,8 @@ import ScrollableCalendar from '@renderer/components/ScrollableCalendar';
 import useSelection from '@renderer/hooks/useSelection';
 import styles from './styles.module.css';
 import dayjs from 'dayjs';
+import { getJournalEntryByDate, saveJournalEntry } from '@renderer/services/journal';
+import useEffectDebounced from '@renderer/hooks/useDebounce';
 
 const JournalPage = (): JSX.Element => {
   // Why not a context? Because updating a context causes a re-render of all consumers. And the content state updates on every keystroke.
@@ -16,6 +18,22 @@ const JournalPage = (): JSX.Element => {
   const [content, setContent] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const selection = useSelection(textareaRef);
+
+  useEffect(() => {
+    getJournalEntryByDate(dayjs()).then((entry) => {
+      if (entry) {
+        setContent(entry.content);
+      }
+    });
+  }, []);
+
+  useEffectDebounced(
+    () => {
+      saveJournalEntry(content, dayjs());
+    },
+    [content],
+    3000
+  );
 
   return (
     <main className={styles.journalPage}>

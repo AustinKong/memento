@@ -33,7 +33,6 @@ const ScrollableCalendar = ({
         (scrollRef.current?.clientHeight ?? 0) / 2 +
         selectedDateRef.current.offsetHeight / 2;
       scrollRef.current?.scrollTo({ left: 0, top: scrollPosition, behavior: 'smooth' });
-      console.log(selectedDateRef.current);
     }
   }, [selectedDate]);
 

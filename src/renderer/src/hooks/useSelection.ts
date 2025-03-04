@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from 'react';
 import { SelectionPosition, Selection } from '../types/selection.types';
-import useDebouncedState from './useDebounce';
+import useDebouncedState from './useDebouncedState';
 
 // Exposes the start and end positions of the current selection in a textarea
 // as line and character offsets or null otherwise.

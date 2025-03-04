@@ -1,8 +1,16 @@
-import { contextBridge } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
 
 // Custom APIs for renderer
-const api = {};
+const api = {
+  'journal:save': (content: string, date: string): void => {
+    ipcRenderer.invoke('journal:save', content, date);
+  },
+  'journal:getByDate': (date: string): Promise<string> => {
+    return ipcRenderer.invoke('journal:getByDate', date);
+  },
+  'test:ping': (): Promise<string> => ipcRenderer.invoke('test:ping')
+};
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
