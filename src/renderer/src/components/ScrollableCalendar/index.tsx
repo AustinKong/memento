@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './styles.module.css';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface ScrollableCalendarProps {
-  initialDate: dayjs.Dayjs;
-  onChangeDate: (date: Date) => void;
+  initialDate: Dayjs;
+  onChangeDate: (date: Dayjs) => void;
 }
 
 const ScrollableCalendar = ({
@@ -36,9 +36,9 @@ const ScrollableCalendar = ({
     }
   }, [selectedDate]);
 
-  const handleChangeDate = (date: dayjs.Dayjs): void => {
+  const handleChangeDate = (date: Dayjs): void => {
     setSelectedDate(date);
-    onChangeDate(date.toDate());
+    onChangeDate(date);
   };
 
   return (

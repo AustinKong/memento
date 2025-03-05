@@ -4,10 +4,54 @@ import useDebouncedState from './useDebouncedState';
 
 // Exposes the start and end positions of the current selection in a textarea
 // as line and character offsets or null otherwise.
-const useSelection = (textareaRef: RefObject<HTMLTextAreaElement>): Selection => {
+const useSelection = (
+  textareaRef: RefObject<HTMLTextAreaElement>
+): [Selection, (startAbsChar: number, endAbsChar: number) => void] => {
   const [selection, setSelection] = useDebouncedState<Selection>(null, 100);
 
+  // Helper function to convert absolute character position to line and character offsets
+  const calculateSelectionPosition = (
+    content: string,
+    absChar: number
+  ): SelectionPosition | null => {
+    const lines = content.split('\n');
+    let selectionPosition: SelectionPosition | null = null;
+    lines.reduce((charCount: number, line: string, index: number): number => {
+      const lineLength = line.length + 1;
+      if (selectionPosition === null && charCount + lineLength >= absChar) {
+        selectionPosition = {
+          line: index,
+          char: absChar - charCount,
+          absChar
+        };
+      }
+      return charCount + lineLength;
+    }, 0);
+    return selectionPosition;
+  };
+
+  // Force selection object and textarea update based on provided values
+  const updateSelectionForce = (startAbsChar: number, endAbsChar: number): void => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const { value } = textarea;
+    const selectionRange = {
+      start: calculateSelectionPosition(value, startAbsChar),
+      end: calculateSelectionPosition(value, endAbsChar)
+    };
+
+    if (selectionRange.start && selectionRange.end) {
+      setSelection(selectionRange as { start: SelectionPosition; end: SelectionPosition });
+      textarea.focus();
+      textarea.setSelectionRange(selectionRange.start.absChar, selectionRange.end.absChar);
+    } else {
+      setSelection(null);
+    }
+  };
+
   useEffect(() => {
+    // Update selection object when textarea changes
     const updateSelection = (): void => {
       const textarea = textareaRef.current;
       if (!textarea) {
@@ -17,30 +61,10 @@ const useSelection = (textareaRef: RefObject<HTMLTextAreaElement>): Selection =>
 
       // https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement
       const { selectionStart, selectionEnd, value } = textarea;
-      const selectionRange: { start: SelectionPosition | null; end: SelectionPosition | null } = {
-        start: null,
-        end: null
+      const selectionRange = {
+        start: calculateSelectionPosition(value, selectionStart),
+        end: calculateSelectionPosition(value, selectionEnd)
       };
-      const lines = value.split('\n');
-
-      lines.reduce((charCount: number, line: string, index: number): number => {
-        const lineLength = line.length + 1;
-        if (selectionRange.start === null && charCount + lineLength >= selectionStart) {
-          selectionRange.start = {
-            line: index,
-            char: selectionStart - charCount,
-            absChar: selectionStart
-          };
-        }
-        if (selectionRange.end === null && charCount + lineLength >= selectionEnd) {
-          selectionRange.end = {
-            line: index,
-            char: selectionEnd - charCount,
-            absChar: selectionEnd
-          };
-        }
-        return charCount + lineLength;
-      }, 0);
 
       if (selectionRange.start && selectionRange.end) {
         setSelection(selectionRange as { start: SelectionPosition; end: SelectionPosition });
@@ -61,7 +85,7 @@ const useSelection = (textareaRef: RefObject<HTMLTextAreaElement>): Selection =>
     };
   }, [setSelection, textareaRef]);
 
-  return selection;
+  return [selection, updateSelectionForce];
 };
 
 export default useSelection;

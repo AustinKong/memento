@@ -1,8 +1,8 @@
 import { Bold, Italic, Underline, Strikethrough, List, ListOrdered } from 'lucide-react';
 
-import Dropdown from '../ui/Dropdown';
-import IconButton from '../ui/IconButton';
-import { Selection } from '../../types/selection.types';
+import Dropdown from '../../ui/Dropdown';
+import IconButton from '../../ui/IconButton';
+import { Selection } from '../../../types/selection.types';
 import { toggleBold, toggleItalic } from '@renderer/utils/markdownFormatter';
 
 import styles from './styles.module.css';
@@ -23,20 +23,19 @@ interface EditorToolbarProps {
   content: string;
   setContent: (content: string) => void;
   selection: Selection;
-  textareaRef: React.RefObject<HTMLTextAreaElement>;
+  updateSelection: (startAbsChar: number, endAbsChar: number) => void;
 }
 
 const EditorToolbar = ({
   content,
   setContent,
   selection,
-  textareaRef
+  updateSelection
 }: EditorToolbarProps): JSX.Element => {
   const refocusCaret = (): void => {
     setTimeout(() => {
-      if (!textareaRef.current || !selection) return;
-      textareaRef.current.focus();
-      textareaRef.current.setSelectionRange(selection.end.absChar, selection.end.absChar);
+      if (!selection) return;
+      updateSelection(selection.end.absChar, selection.end.absChar);
     }, 0);
   };
 

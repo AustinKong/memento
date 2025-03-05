@@ -1,5 +1,7 @@
-import { forwardRef } from 'react';
+import useSelection from '@renderer/hooks/useSelection';
+import EditorToolbar from './EditorToolbar';
 import styles from './styles.module.css';
+import { useRef } from 'react';
 
 interface EditorProps {
   content: string;
@@ -7,21 +9,28 @@ interface EditorProps {
   placeholder?: string;
 }
 
-const Editor = forwardRef<HTMLTextAreaElement, EditorProps>(
-  ({ content, setContent, placeholder }, ref): JSX.Element => {
-    return (
+const Editor = ({ content, setContent, placeholder }: EditorProps): JSX.Element => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [selection, updateSelection] = useSelection(textareaRef);
+
+  return (
+    <>
       <div className={styles.editor}>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder={placeholder}
-          ref={ref}
+          ref={textareaRef}
         />
       </div>
-    );
-  }
-);
-
-Editor.displayName = 'Editor';
+      <EditorToolbar
+        content={content}
+        setContent={setContent}
+        selection={selection}
+        updateSelection={updateSelection}
+      />
+    </>
+  );
+};
 
 export default Editor;

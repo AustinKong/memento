@@ -32,6 +32,9 @@ export class JournalEntriesDatabase {
       created_at: dayjs().toISOString(),
       date: date.format('YYYY-MM-DD')
     };
+
+    if (!content) return;
+
     this.db
       .prepare(
         `INSERT INTO journal_entries (content, created_at, date) 
